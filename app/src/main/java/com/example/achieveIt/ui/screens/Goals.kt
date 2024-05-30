@@ -40,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.achieveIt.data.entities.GoalEntity
+import com.example.achieveIt.ui.AddGoalDialog
 import com.example.achieveIt.ui.MainViewModel
 import com.example.achieveIt.ui.cards.GoalCard
 import com.example.achieveIt.ui.theme.Roboto
@@ -108,10 +109,11 @@ fun Goals(
                 contentPadding = PaddingValues(13.dp),
                 verticalArrangement = Arrangement.spacedBy(13.dp),
                 modifier = Modifier
-                    .heightIn(max =
-                    (108 * uncompletedGoals.size
-                            + 13 * (uncompletedGoals.size - 1)
-                            + 15).dp
+                    .heightIn(
+                        max =
+                        (108 * uncompletedGoals.size
+                                + 13 * (uncompletedGoals.size - 1)
+                                + 15).dp
                     )
             ) {
                 items(uncompletedGoals) { goal ->
@@ -123,10 +125,11 @@ fun Goals(
                 contentPadding = PaddingValues(13.dp),
                 verticalArrangement = Arrangement.spacedBy(13.dp),
                 modifier = Modifier
-                    .heightIn(max =
-                    (108 * completedGoals.size
-                            + 13 * (completedGoals.size - 1)
-                            + 15).dp
+                    .heightIn(
+                        max =
+                        (108 * completedGoals.size
+                                + 13 * (completedGoals.size - 1)
+                                + 15).dp
                     )
             ) {
                 items(completedGoals) { goal ->
@@ -138,15 +141,7 @@ fun Goals(
         Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
-                viewModel.insert(
-                    GoalEntity(
-                        title = "Oleg1",
-                        description = "osghdfghdfhdghfhgdhgfhdfhgdhdghdfhdhhfhfghfghfghgfhfhfhfghgfhfhfhfghfghfghfghfhfhfghfhfhfhfhfhfhfghfhfhfhgfhfghfghfghfghfghgfhfghfhhggfhfghfghfghfghfhfghfgh",
-                        date = "oleg",
-                        isCompleted = false
-                    )
-                )
-                Toast.makeText(context, "${goals.lastIndex}", Toast.LENGTH_SHORT).show()
+                viewModel.showDialogState = viewModel.showDialogState.not()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -163,6 +158,27 @@ fun Goals(
                     fontWeight = W500
                 )
             }
+        }
+
+        if (viewModel.showDialogState) {
+            AddGoalDialog(
+                onDismissRequest = {
+                    viewModel.showDialogState = false
+                    viewModel.clearData()
+                },
+                onConfirmation = {
+                    viewModel.insert(
+                        GoalEntity(
+                            title = viewModel.goalTitleState,
+                            description = viewModel.goalDescriptionState,
+                            date = viewModel.goalDate
+                        )
+                    )
+                    viewModel.showDialogState = false
+                    viewModel.clearData()
+                },
+                viewModel = viewModel
+            )
         }
     }
 }

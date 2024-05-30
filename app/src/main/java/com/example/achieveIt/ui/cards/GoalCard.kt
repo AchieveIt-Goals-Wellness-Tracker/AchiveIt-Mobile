@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
@@ -76,10 +77,10 @@ fun GoalCard(
                 )
             }
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = { viewModel.delete(goalEntity) },
                 modifier = Modifier.weight(5f)
             ) {
-                Icon(imageVector = Icons.Filled.KeyboardArrowRight, contentDescription = null)
+                Icon(imageVector = Icons.Filled.Delete, contentDescription = null)
             }
         }
     }
