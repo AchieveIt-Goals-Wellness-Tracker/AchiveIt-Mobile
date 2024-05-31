@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.achieveIt.data.entities.GoalEntity
+import com.example.achieveIt.toStringDate
 import com.example.achieveIt.ui.theme.Roboto
 import java.util.Date
 
@@ -68,7 +69,7 @@ fun AddGoalDialog(
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, currentYear: Int, currentMonth: Int, currentDay: Int ->
-            viewModel.updateGoalDate("$currentYear/${currentMonth + 1}/$currentDay")
+            viewModel.updateGoalDate(toStringDate(currentYear,currentMonth,currentDay))
         }, year, month, day
     )
 
