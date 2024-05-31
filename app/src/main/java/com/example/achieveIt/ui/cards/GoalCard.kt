@@ -34,7 +34,8 @@ import com.example.achieveIt.ui.theme.Roboto
 @Composable
 fun GoalCard(
     goalEntity: GoalEntity,
-    viewModel: MainViewModel,
+    onChecked: () -> Unit,
+    onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -48,7 +49,7 @@ fun GoalCard(
             Checkbox(
                 checked = goalEntity.isCompleted,
                 onCheckedChange = {
-                    viewModel.update(goalEntity.copy(isCompleted = !goalEntity.isCompleted))
+                    onChecked()
                 },
                 modifier = Modifier.weight(5f)
             )
@@ -77,25 +78,11 @@ fun GoalCard(
                 )
             }
             IconButton(
-                onClick = { viewModel.delete(goalEntity) },
+                onClick = { onDelete() },
                 modifier = Modifier.weight(5f)
             ) {
                 Icon(imageVector = Icons.Filled.Delete, contentDescription = null)
             }
-        }
-    }
-}
-
-@Composable
-@Preview
-private fun GoalCardPreview() {
-    val viewModel: MainViewModel = viewModel()
-    HealthyMeTheme {
-        Surface {
-            GoalCard(
-                goalEntity = GoalEntity(0, "asdffad", "asdfsdfasfsadf", "", false),
-                viewModel = viewModel
-            )
         }
     }
 }

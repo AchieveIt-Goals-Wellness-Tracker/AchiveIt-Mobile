@@ -3,8 +3,11 @@ package com.example.achieveIt.data
 import android.content.Context
 import androidx.room.Room
 import com.example.achieveIt.data.dao.GoalDao
+import com.example.achieveIt.data.dao.WellnessDao
 import com.example.achieveIt.data.db.GoalsDatabase
+import com.example.achieveIt.data.db.WellnessDatabase
 import com.example.achieveIt.data.repository.GoalsRepository
+import com.example.achieveIt.data.repository.WellnessRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,14 +21,27 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): GoalsDatabase =
+    fun provideGoalsDatabase(@ApplicationContext context: Context): GoalsDatabase =
         Room.databaseBuilder(context, GoalsDatabase::class.java, "goals_database")
             .fallbackToDestructiveMigration()
             .build()
 
     @Provides
-    fun provideItemDao(goalsDatabase: GoalsDatabase): GoalDao = goalsDatabase.goalDao()
+    fun provideGoalDao(goalsDatabase: GoalsDatabase): GoalDao = goalsDatabase.goalDao()
 
     @Provides
     fun provideGoalsRepository(goalDao: GoalDao): GoalsRepository = GoalsRepository(goalDao)
+
+    @Provides
+    @Singleton
+    fun provideWellnessDatabase(@ApplicationContext context: Context): WellnessDatabase =
+        Room.databaseBuilder(context, WellnessDatabase::class.java, "wellness_database")
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @Provides
+    fun provideWellnessDao(wellnessDatabase: WellnessDatabase): WellnessDao = wellnessDatabase.wellnessDao()
+
+    @Provides
+    fun provideWellnessRepository(wellnessDao: WellnessDao): WellnessRepository = WellnessRepository(wellnessDao)
 }
