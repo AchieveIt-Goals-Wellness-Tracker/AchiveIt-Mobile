@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.achieveIt.data.entities.GoalEntity
-import com.example.achieveIt.ui.AddGoalDialog
+import com.example.achieveIt.ui.dialogs.AddGoalDialog
 import com.example.achieveIt.ui.MainViewModel
 import com.example.achieveIt.ui.cards.GoalCard
 import com.example.achieveIt.ui.theme.Roboto
@@ -114,7 +114,11 @@ fun Goals(
                     )
             ) {
                 items(uncompletedGoals) { goal ->
-                    GoalCard(goalEntity = goal, viewModel = viewModel)
+                    GoalCard(
+                        goalEntity = goal,
+                        onChecked = { viewModel.update(goal.copy(isCompleted = !goal.isCompleted)) },
+                        onDelete = { viewModel.delete(goal) }
+                    )
                 }
             }
         } else {
@@ -130,7 +134,11 @@ fun Goals(
                     )
             ) {
                 items(completedGoals) { goal ->
-                    GoalCard(goalEntity = goal, viewModel = viewModel)
+                    GoalCard(
+                        goalEntity = goal,
+                        onChecked = { viewModel.update(goal.copy(isCompleted = !goal.isCompleted)) },
+                        onDelete = { viewModel.delete(goal) }
+                    )
                 }
             }
         }
