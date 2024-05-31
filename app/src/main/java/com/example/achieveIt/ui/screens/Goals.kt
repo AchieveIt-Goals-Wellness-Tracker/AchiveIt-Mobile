@@ -32,7 +32,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +46,6 @@ fun Goals(
     viewModel: MainViewModel,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     val scrollState = rememberScrollState()
 
     val goals = viewModel.goals.collectAsState().value
@@ -116,8 +114,8 @@ fun Goals(
                 items(uncompletedGoals) { goal ->
                     GoalCard(
                         goalEntity = goal,
-                        onChecked = { viewModel.update(goal.copy(isCompleted = !goal.isCompleted)) },
-                        onDelete = { viewModel.delete(goal) }
+                        onChecked = { viewModel.updateGoal(goal.copy(isCompleted = !goal.isCompleted)) },
+                        onDelete = { viewModel.deleteGoal(goal) }
                     )
                 }
             }
@@ -136,8 +134,8 @@ fun Goals(
                 items(completedGoals) { goal ->
                     GoalCard(
                         goalEntity = goal,
-                        onChecked = { viewModel.update(goal.copy(isCompleted = !goal.isCompleted)) },
-                        onDelete = { viewModel.delete(goal) }
+                        onChecked = { viewModel.updateGoal(goal.copy(isCompleted = !goal.isCompleted)) },
+                        onDelete = { viewModel.deleteGoal(goal) }
                     )
                 }
             }
@@ -172,7 +170,7 @@ fun Goals(
                     viewModel.clearGoalDialogData()
                 },
                 onConfirmation = {
-                    viewModel.insert(
+                    viewModel.insertGoal(
                         GoalEntity(
                             title = viewModel.goalTitleState,
                             description = viewModel.goalDescriptionState,

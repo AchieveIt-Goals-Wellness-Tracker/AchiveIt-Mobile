@@ -1,6 +1,7 @@
 package com.example.achieveIt.ui
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -42,29 +43,30 @@ class MainViewModel @Inject constructor(
 
     var morningEmotional by mutableIntStateOf(0)
         private set
-    fun updateMorningEmotional(int: Int) {
-        morningEmotional = int
+    fun updateMorningEmotional(value: Int) {
+        morningEmotional = value
     }
 
     var eveningEmotional by mutableIntStateOf(0)
         private set
-    fun updateEveningEmotional(int: Int) {
-        eveningEmotional = int
+    fun updateEveningEmotional(value: Int) {
+        eveningEmotional = value
     }
 
     var eveningActivity by mutableIntStateOf(0)
         private set
-    fun updateEveningActivity(int: Int) {
-        eveningActivity = int
+    fun updateEveningActivity(value: Int) {
+        eveningActivity = value
     }
 
     var eveningProductivity by mutableIntStateOf(0)
         private set
-    fun updateEveningProductivity(int: Int) {
-        eveningProductivity = int
+    fun updateEveningProductivity(value: Int) {
+        eveningProductivity = value
     }
 
     var showAddGoalDialogState by mutableStateOf(false)
+    var showAddWellnessDialogState by mutableStateOf(false)
 
     private var _allGoals = MutableStateFlow<List<GoalEntity>>(emptyList())
     private var _allWellness = MutableStateFlow<List<WellnessEntity>>(emptyList())
@@ -78,6 +80,8 @@ class MainViewModel @Inject constructor(
             goalsRepository.getAllGoals().collect {
                 _allGoals.value = it
             }
+        }
+        viewModelScope.launch {
             wellnessRepository.getAllWellness().collect {
                 _allWellness.value = it
             }
@@ -88,23 +92,37 @@ class MainViewModel @Inject constructor(
     // Функции для Goals
     fun getGoal(id: Int) = viewModelScope.launch { goalsRepository.getGoal(id) }
 
-    fun insert(goal: GoalEntity) = viewModelScope.launch { goalsRepository.insert(goal) }
+    fun insertGoal(goal: GoalEntity) = viewModelScope.launch { goalsRepository.insert(goal) }
 
-    fun update(goal: GoalEntity) = viewModelScope.launch { goalsRepository.update(goal) }
+    fun updateGoal(goal: GoalEntity) = viewModelScope.launch { goalsRepository.update(goal) }
 
-    fun delete(goal: GoalEntity) = viewModelScope.launch { goalsRepository.delete(goal) }
+    fun deleteGoal(goal: GoalEntity) = viewModelScope.launch { goalsRepository.delete(goal) }
 
     // Функции для Wellness
 
     fun getWellness(currentDate: String) = viewModelScope.launch { wellnessRepository.getWellness(currentDate) }
 
-    fun upsert(wellness: WellnessEntity) = viewModelScope.launch { wellnessRepository.upsert(wellness) }
+    fun upsertWellness(wellness: WellnessEntity) = viewModelScope.launch { wellnessRepository.upsert(wellness) }
 
-    fun delete(wellness: WellnessEntity) = viewModelScope.launch { wellnessRepository.delete(wellness) }
+    fun deleteWellness(wellness: WellnessEntity) = viewModelScope.launch { wellnessRepository.delete(wellness) }
 
     fun clearGoalDialogData() {
         goalTitleState = ""
         goalDescriptionState = ""
         goalDate = ""
+    }
+
+    fun clearWellnessDialogData() {
+        morningEmotional = 0
+        eveningActivity = 0
+        eveningEmotional = 0
+        eveningProductivity = 0
+    }
+
+    fun setWellnessDataToViewModel(item: WellnessEntity) {
+        morningEmotional = item.morningEmotional
+        eveningActivity = item.eveningActivity
+        eveningEmotional = item.eveningEmotional
+        eveningProductivity = item.eveningProductivity
     }
 }

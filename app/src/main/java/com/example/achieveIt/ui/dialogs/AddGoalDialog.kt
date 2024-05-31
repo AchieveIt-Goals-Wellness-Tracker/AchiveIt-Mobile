@@ -120,6 +120,7 @@ fun AddGoalDialog(
                         )
                     )
                     Spacer(Modifier.height(15.dp))
+                    // todo: move focus on textfield
                     OutlinedTextField(
                         value = viewModel.goalDescriptionState,
                         onValueChange = { viewModel.updateGoalDescription(it) },

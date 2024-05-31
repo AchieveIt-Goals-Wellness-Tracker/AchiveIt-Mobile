@@ -10,15 +10,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
-import androidx.compose.ui.text.font.FontWeight.Companion.W500
+import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +34,8 @@ fun WellnessCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -53,36 +54,36 @@ fun WellnessCard(
                 Text(
                     text = "Утреннее состояние: ${wellnessEntity.morningEmotional}",
                     fontFamily = Roboto,
-                    fontSize = 16.sp,
-                    fontWeight = W500,
+                    fontSize = 18.sp,
+                    fontWeight = W600,
                     color = Color(0xFF1D1B20)
                 )
                 Text(
                     text = "Вечернее состояние: ${wellnessEntity.eveningEmotional}",
                     fontFamily = Roboto,
-                    fontSize = 16.sp,
-                    fontWeight = W500,
+                    fontSize = 18.sp,
+                    fontWeight = W600,
                     color = Color(0xFF1D1B20)
                 )
                 Text(
                     text = "Активность: ${wellnessEntity.eveningActivity}",
                     fontFamily = Roboto,
-                    fontSize = 16.sp,
-                    fontWeight = W500,
+                    fontSize = 18.sp,
+                    fontWeight = W600,
                     color = Color(0xFF1D1B20)
                 )
                 Text(
                     text = "Продуктивность: ${wellnessEntity.eveningProductivity}",
                     fontFamily = Roboto,
-                    fontSize = 16.sp,
-                    fontWeight = W500,
+                    fontSize = 18.sp,
+                    fontWeight = W600,
                     color = Color(0xFF1D1B20)
                 )
             }
             Spacer(Modifier.weight(1f))
             Column(
-                modifier = Modifier.padding(top = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier.padding(top = 14.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 IconButton(onClick = { onDelete() }) {
                     Icon(imageVector = Icons.Filled.Delete, contentDescription = null)

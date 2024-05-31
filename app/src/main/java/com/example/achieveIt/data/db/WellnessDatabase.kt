@@ -6,7 +6,7 @@ import com.example.achieveIt.data.dao.WellnessDao
 import com.example.achieveIt.data.entities.WellnessEntity
 
 @Database(entities = [WellnessEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false)
 abstract class WellnessDatabase : RoomDatabase() {
     abstract fun wellnessDao() : WellnessDao
