@@ -65,6 +65,12 @@ class MainViewModel @Inject constructor(
         eveningProductivity = value
     }
 
+    var currentDate by mutableStateOf("")
+        private set
+    fun updateCurrentDate(value: String) {
+        currentDate = value
+    }
+
     var showAddGoalDialogState by mutableStateOf(false)
     var showAddWellnessDialogState by mutableStateOf(false)
 
@@ -86,7 +92,6 @@ class MainViewModel @Inject constructor(
                 _allWellness.value = it
             }
         }
-
     }
 
     // Функции для Goals
@@ -117,6 +122,7 @@ class MainViewModel @Inject constructor(
         eveningActivity = 0
         eveningEmotional = 0
         eveningProductivity = 0
+        currentDate = ""
     }
 
     fun setWellnessDataToViewModel(item: WellnessEntity) {
@@ -124,5 +130,6 @@ class MainViewModel @Inject constructor(
         eveningActivity = item.eveningActivity
         eveningEmotional = item.eveningEmotional
         eveningProductivity = item.eveningProductivity
+        currentDate = item.currentDate
     }
 }
