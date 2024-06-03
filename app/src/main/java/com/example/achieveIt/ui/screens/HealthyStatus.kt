@@ -22,7 +22,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -32,9 +34,13 @@ import com.example.achieveIt.data.entities.GoalEntity
 import com.example.achieveIt.data.entities.WellnessEntity
 import com.example.achieveIt.toStringDate
 import com.example.achieveIt.ui.MainViewModel
+import com.example.achieveIt.ui.cards.EmptyWellnessCard
 import com.example.achieveIt.ui.cards.WellnessCard
 import com.example.achieveIt.ui.dialogs.AddWellnessDialog
 import com.example.achieveIt.ui.theme.Roboto
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.job
+import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
@@ -54,6 +60,9 @@ fun HealthyStatus(
 
     calendar.time = Date()
 
+    val containsWellness =
+        wellness.find { it.currentDate == toStringDate(year, month, day) } != null
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -63,16 +72,25 @@ fun HealthyStatus(
             contentPadding = PaddingValues(13.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.heightIn(
-                max = (180 * wellness.size + 16 * (wellness.size - 1) + 20).dp
+                max = (180 * wellness.size
+                        + 16 * (wellness.size - 1)
+                        + if (!containsWellness) 100 else 0
+                        + 40).dp
             )
         ) {
+            item {
+                if (!containsWellness) {
+                    EmptyWellnessCard()
+                }
+            }
             items(wellness) { item ->
                 WellnessCard(
                     wellnessEntity = item,
                     onDelete = { viewModel.deleteWellness(item) },
                     onChange = {
                         viewModel.setWellnessDataToViewModel(item)
-                        viewModel.showAddWellnessDialogState = viewModel.showAddWellnessDialogState.not()
+                        viewModel.showAddWellnessDialogState =
+                            viewModel.showAddWellnessDialogState.not()
                     }
                 )
             }
@@ -107,7 +125,7 @@ fun HealthyStatus(
                     onConfirmation = {
                         viewModel.upsertWellness(
                             WellnessEntity(
-                                currentDate = toStringDate(year, month, day),
+                                currentDate = viewModel.currentDate.ifBlank { toStringDate(year, month, day) },
                                 morningEmotional = viewModel.morningEmotional,
                                 eveningEmotional = viewModel.eveningEmotional,
                                 eveningProductivity = viewModel.eveningProductivity,
